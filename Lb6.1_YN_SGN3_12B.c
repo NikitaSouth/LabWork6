@@ -6,10 +6,11 @@ void matrixInput(int**, int);
 void matrixOutput(int**, int);
 void matrixShuffle(int**, int);
 void matrixFree(int**, int);
+int** memoryAllocate(int);
 
 int main()
 {
-	int** matrix;
+	int** squareMatrix;
 	int matrixSize; //В комментарии от лектора было сказано, что создается евадратная матрица, поэтому её измерения равны и равны matrixSize
 	printf("Enter size of the matrix:");
 	scanf_s("%d", &matrixSize);
@@ -17,23 +18,17 @@ int main()
 		printf("Size of the matrix can't be equal one or below");
 		return 0;
 	}
-	matrix = (int**)malloc(matrixSize * sizeof(int*));
-	if (matrix == NULL){
+	squareMatrix = memoryAllocate(matrixSize);
+	if (squareMatrix == NULL) {
+		printf("An error in memory allocation has occurred\a");
 		return 0;
 	}
-	for (int i = 0; i < matrixSize; i++){
-		*(matrix + i) = (int*)malloc(matrixSize * sizeof(int));
-		if (*(matrix + i) == NULL) {
-			matrixFree(matrix, i);
-			return 0;
-		}
-	}
-	matrixInput(matrix, matrixSize);
-	matrixOutput(matrix, matrixSize);
-	matrixShuffle(matrix, matrixSize);
+	matrixInput(squareMatrix, matrixSize);
+	matrixOutput(squareMatrix, matrixSize);
+	matrixShuffle(squareMatrix, matrixSize);
 	printf("\nmatrix after:\n");
-	matrixOutput(matrix, matrixSize);
-	matrixFree(matrix, matrixSize);
+	matrixOutput(squareMatrix, matrixSize);
+	matrixFree(squareMatrix, matrixSize);
 	return 0;
 }
 
@@ -73,4 +68,20 @@ void matrixFree(int** matrixName, int matrixSize){
 		free(*(matrixName + i));
 	}
 	free(matrixName);
+}
+
+int** memoryAllocate(int matrixSize)
+{
+	int** matrix = (int**)malloc(sizeof(int*) * matrixSize);
+	if (matrix == NULL) {
+		return matrix;
+	}
+	for (int i = 0; i < matrixSize; i++) {
+		*(matrix + i) = (int*)malloc(sizeof(int) * matrixSize);
+		if (*(matrix + i) == NULL) {
+			matrixFree(matrix, i);
+			return matrix;
+		}
+	}
+	return matrix;
 }

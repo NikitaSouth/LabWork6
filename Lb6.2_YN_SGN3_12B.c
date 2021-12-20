@@ -22,7 +22,7 @@ int main()
 	matrixSizeHorizontal = matrixSizeVertical; //По условию матрица задается квадратной, но для задания ей нужны как и вертикальное, так и горизонтальное измерение.
 	squareMatrix = memoryAllocate(matrixSizeVertical, matrixSizeHorizontal);
 	if (squareMatrix == NULL) {
-		printf("An error in memory allocation has accured!\a");
+		printf("An error in memory allocation has occurred!\a");
 		return 0;
 	}
 	matrixInput(squareMatrix, matrixSizeVertical, matrixSizeHorizontal);
@@ -41,13 +41,11 @@ int** memoryAllocate(int matrixSizeV, int matixSizeH)
 {
 	int** matrix = (int**)malloc(sizeof(int*) * matrixSizeV);
 	if (matrix == NULL) {
-		printf("An error in memory allocation has accured!\a");
 		return matrix;
 	}
 	for (int i = 0; i < matrixSizeV; i++) {
 		*(matrix + i) = (int*)malloc(sizeof(int) * matixSizeH);
 		if(*(matrix + i) == NULL) {
-			printf("An error in memory allocation has accured!\a");
 			matrixFree(matrix, i);
 			return matrix;
 		}
